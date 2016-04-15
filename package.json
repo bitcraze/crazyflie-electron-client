@@ -1,0 +1,19 @@
+{
+  "name": "crazyflie-electron-client",
+  "version": "1.0.0",
+  "description": "A minimal Crazyflie client",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron main.js"
+  },
+  "keywords": [
+    "Electron",
+    "crazyflie"
+  ],
+  "author": "Bitcraze",
+  "license": "MIT",
+  "devDependencies": {
+    "electron-prebuilt": "^0.37.0",
+    "usb": ""
+  }
+}
