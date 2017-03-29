@@ -96,6 +96,37 @@ var Crazyradio = (function() {
     controlTransfer(0x03, datarate, Buffer(0), callback);
   };
 
+  my.scanChannels = function(start, stop, scanCb) {
+    var channel = start;
+    var channels = [];
+    var cb1 = function(ack, data) {
+      //console.log("in cb1")
+      // Check the ack
+      if (ack) {
+        channels.push(channel);
+      }
+      channel++;
+      if (channel <= stop) {
+        //set channel with callback cb2
+        my.setChannel(channel, cb2);
+      } else {
+        // call scanCb with table of found channel
+        scanCb(channels);
+      }
+    };
+    var cb2 = function() {
+      //console.log("in cb2")
+      // send null packet with callback cb1
+      var pingPacket = new ArrayBuffer(1);
+      var pingdv = new DataView(pingPacket);
+      // pingdv.getUint8(0, true)
+      pingdv.setUint8(0, 0xff, true);
+      my.sendPacket(pingPacket, cb1);
+    }
+    //set channel with callback cb2
+    my.setChannel(channel, cb2);
+  };
+
   my.close = function() {
     if (state !== "opened") {
       return;

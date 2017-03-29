@@ -7,8 +7,12 @@
 
 <body>
   <div id="channelStyle">
-    Channel: <input type="number" min="0" max="125" id="channel" value="0">
+    <select id="channel" value="null">
+      <option value="null"></option>
+    </select>
   </div>
+  <input type="button" id="scanButton" value="Scan">
+  <br>
   Datarate:
   <select id="datarate" value="2Mbps">
     <option value="2Mbps">2Mbps</option>

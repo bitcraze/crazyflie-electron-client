@@ -5,11 +5,29 @@
   var usedGamepad;
   var lastTime = Date.now();
   var prev_thrust;
+  var channels;
 
   window.onload = function() {
     if (Crazyradio.checkDevice() === false) {
-      console.log("Cannot find Crazyradio")
+      //console.log("Cannot find Crazyradio")
       $("#connectButton").text("Cannot find Crazyradio");
+    }
+    document.querySelector('#scanButton').onclick = function() {
+      $('#channel').empty();
+      $('#channel').append('<option value="null"></option>')
+      $('#channel').value = "null";
+      Crazyradio.open(function(state) {
+        if (state) {
+          Crazyradio.scanChannels(0, 125, function(channels) {
+            _(channels).each(function (c) {
+              if (c) {
+                $('#channel').append('<option val="' + c + '">' + c + '</option>');
+              }
+            });
+          });
+        }
+      });
+      Crazyradio.close();
     }
     document.querySelector('#connectButton').onclick = function() {
 
@@ -106,18 +124,18 @@
         //console.log(Date.now() - lastTime)
         //console.log("Thrust: " + limited_thrust + ", Previous Thrust: " + prev_thrust)
         if (prev_thrust > limited_thrust && limited_thrust > 0) {
-          console.log('Descending')
+          //console.log('Descending')
           if (thrust > slew_limit) {
-            console.log('No slew yet')
+            //console.log('No slew yet')
             limited_thrust = thrust;
           } else {
-            console.log('Slew required')
+            //console.log('Slew required')
             if (prev_thrust > slew_limit) {
               limited_thrust = slew_limit;
-              console.log('Starting slew' + limited_thrust)
+              //console.log('Starting slew' + limited_thrust)
             } else {
               limited_thrust = prev_thrust - lowering;
-              console.log('Lowering slew: ' + limited_thrust)
+              //console.log('Lowering slew: ' + limited_thrust)
             }
           }
         } else if (thrust < minThrust) {
@@ -139,7 +157,7 @@
           limited_thrust = 0;
         }
         thrust = limited_thrust;
-        if (yaw < 5 && yaw > -5) {
+        if (yaw < 40 && yaw > -40) {
           yaw = 0;
         }
         if (roll < 2 && roll > -2) {
@@ -165,6 +183,8 @@
     dv.setFloat32(5, pitch, true);   // Pitch
     dv.setFloat32(9, yaw, true);     // Yaw
     dv.setUint16(13, thrust, true);  // Thrust
+
+    //console.log(dv.getFloat32(1, true))
 
     Crazyradio.sendPacket(packet, function(state, data) {
       if (state === true) {
