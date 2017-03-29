@@ -6,7 +6,9 @@
 </head>
 
 <body>
-  Channel: <input type="number" min="0" max="125" id="channel" value="2"><br>
+  <div id="channelStyle">
+    Channel: <input type="number" min="0" max="125" id="channel" value="0">
+  </div>
   Datarate:
   <select id="datarate" value="2Mbps">
     <option value="2Mbps">2Mbps</option>
@@ -20,6 +22,21 @@
   <div id="packetLed"></div>
 
   <div id="gamepadText">Press <i>X</i> (or <i>A</i>) on the gamepad you want to use</div>
+
+  Controller Scheme:
+  <select id="controlScheme" value="default">
+    <option value="default">Default</option>
+    <option value="experimental">Experimental</option>
+  </select>
+  <br>
+
+  <div id="thrustMeter">Thrust: 0%</div>
+
+  <div id="yawMeter">Yaw: 0.0</div>
+
+  <div id="rollMeter">Roll: 0.0</div>
+
+  <div id="pitchMeter">Pitch: 0.0</div>
 
   <script src="bower_components/underscore/underscore.js"></script>
   <script>window.$ = window.jQuery = require('./bower_components/jquery/dist/jquery.js');</script>

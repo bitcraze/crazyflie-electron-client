@@ -50,6 +50,15 @@ var Crazyradio = (function() {
     }
   };
 
+  my.checkDevice = function() {
+    var device = usb.findByIds(0x1915, 0x7777);
+    if (device != undefined) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   my.sendPacket = function(buffer, packetSendCb) {
     my.outep.transfer(buffer, function(error) {
       console.log(error);
